@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Persona : MonoBehaviour
+public class Persona
 {
     [SerializeField]
     public string nombre;
@@ -12,17 +12,5 @@ public class Persona : MonoBehaviour
         this.nombre = nombre;
         this.correo = correo;
         this.direccion = direccion;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.UI; // 👈 agregado para poder mostrar estado en UI (si lo necesitas después)
 
 public class Cajero : MonoBehaviour
 {
@@ -13,11 +13,18 @@ public class Cajero : MonoBehaviour
 
     private ColaManager manager;
 
+    // 👇 agregado: referencia opcional a un texto UI para mostrar estado
+    public Text estadoTexto;
+
     public void Init(ColaManager colaManager, string nombreCajero)
     {
         manager = colaManager;
         nombre = nombreCajero;
         StartCoroutine(RoutineAtender());
+
+        // 👇 agregado: si hay texto, mostrar estado inicial
+        if (estadoTexto != null)
+            estadoTexto.text = $"{nombre} (Libre)";
     }
 
     private IEnumerator RoutineAtender()
@@ -30,16 +37,23 @@ public class Cajero : MonoBehaviour
                 if (c != null)
                 {
                     ocupado = true;
+
                     Debug.Log($"{nombre} atiende a {c.idCliente} ({c.tramite})");
+
+                    if (estadoTexto != null)
+                        estadoTexto.text = $"{nombre} (Ocupado)";
 
                     yield return new WaitForSeconds(c.tiempoAtencion);
 
                     clientesAtendidos++;
                     tiemposAtencion.Add(c.tiempoAtencion);
 
-                    Debug.Log($"{nombre} termin� con {c.idCliente} en {c.tiempoAtencion:0.0}s");
+                    Debug.Log($"{nombre} terminó con {c.idCliente} en {c.tiempoAtencion:0.0}s");
 
                     ocupado = false;
+
+                    if (estadoTexto != null)
+                        estadoTexto.text = $"{nombre} (Libre)";
                 }
             }
             yield return null;
@@ -52,15 +66,14 @@ public class Cajero : MonoBehaviour
         foreach (float t in tiemposAtencion) total += t;
         return total;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        
+        // nada por ahora
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // nada por ahora
     }
 }
